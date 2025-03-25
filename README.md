@@ -11,6 +11,15 @@ A lightweight, typed HTTP client based on the Fetch API with an axios-like inter
 - 🛡️ Error handling with safe request variants
 - 🧩 Create multiple client instances with different configs
 
+## Roadmap
+- [ ] Better testing
+- [ ] Rate limiting
+- [ ] Request cancellation
+- [ ] Cache layer
+- [ ] Authentication helpers (OAuth, JWT Refresh etc)
+- [ ] Streaming support
+- [ ] Progress tracking
+
 ## Installation
 
 ```bash
