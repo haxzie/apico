@@ -1,0 +1,50 @@
+{
+  "name": "@haxzie/apico",
+  "version": "0.1.0",
+  "description": "A lightweight, typed HTTP client based on fetch with axios-like API",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target browser --format esm && tsc --emitDeclarationOnly",
+    "test": "bun test",
+    "dev": "bun build ./src/index.ts --outdir ./dist --target browser --format esm --watch",
+    "prepublishOnly": "bun run build",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "http",
+    "fetch",
+    "request",
+    "api",
+    "axios",
+    "client",
+    "typescript",
+    "browser",
+    "interceptor"
+  ],
+  "author": "Musthaq Ahamad (haxzie)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haxzie/apico.git"
+  },
+  "bugs": {
+    "url": "https://github.com/haxzie/apico/issues"
+  },
+  "homepage": "https://github.com/haxzie/apico#readme",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
