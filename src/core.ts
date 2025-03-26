@@ -7,7 +7,6 @@ import type {
   RequestConfig,
   RequestResult,
   ResponseInterceptor,
-  ResponsePerformance,
 } from "./types";
 
 import {
@@ -17,7 +16,6 @@ import {
   createTimeoutController,
   getContentTypeHeader,
   prepareRequestBody,
-  createPerformanceTracker,
   calculatePerformanceMetrics,
 } from "./utils";
 
