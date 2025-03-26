@@ -1,4 +1,20 @@
-import type { RequestConfig } from './types';
+import type { RequestConfig, ResponsePerformance } from './types';
+
+/**
+ * Builds the final request configuration by merging defaults and specifics
+ */
+export function buildRequestConfig(
+  config: RequestConfig, 
+  defaults: RequestConfig = {}
+): RequestConfig {
+  const mergedConfig: RequestConfig = {
+    ...defaults,
+    ...config,
+    headers: mergeHeaders(defaults.headers, config.headers)
+  };
+  
+  return mergedConfig;
+}
 
 /**
  * Builds a URL with query parameters
@@ -118,17 +134,45 @@ export function createTimeoutController(timeout?: number): {
 }
 
 /**
- * Builds the final request configuration by merging defaults and specifics
+ * Tracks performance metrics for HTTP requests
  */
-export function buildRequestConfig(
-  config: RequestConfig, 
-  defaults: RequestConfig = {}
-): RequestConfig {
-  const mergedConfig: RequestConfig = {
-    ...defaults,
-    ...config,
-    headers: mergeHeaders(defaults.headers, config.headers)
+export interface PerformanceMetrics {
+  startTime: number;
+  firstByteTime?: number;
+  endTime?: number;
+}
+
+export function createPerformanceTracker(): PerformanceMetrics {
+  return {
+    startTime: performance.now()
   };
+}
+
+export function calculatePerformanceMetrics(
+  metrics: PerformanceMetrics,
+  response: Response
+): ResponsePerformance {
+  const endTime = metrics.endTime || performance.now();
+  const firstByteTime = metrics.firstByteTime || endTime;
   
-  return mergedConfig;
+  // Calculate timing metrics
+  const duration = endTime - metrics.startTime;
+  const latency = firstByteTime - metrics.startTime;
+  const transferTime = endTime - firstByteTime;
+  
+  // Calculate processing time (time spent after receiving the first byte)
+  const processingTime = transferTime;
+  
+  // Get size and encoding information from headers
+  const transferSize = parseInt(response.headers.get('content-length') || '0', 10) || 0;
+  const transferEncoding = response.headers.get('content-encoding') || 'identity';
+  
+  return {
+    duration,
+    latency,
+    processingTime,
+    transferTime,
+    transferSize,
+    transferEncoding
+  };
 }

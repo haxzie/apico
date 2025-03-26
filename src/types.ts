@@ -18,6 +18,15 @@ export interface RequestConfig extends Omit<RequestInit, 'body' | 'method'> {
   responseType?: 'json' | 'text' | 'blob' | 'arrayBuffer' | 'formData';
 }
 
+export type ResponsePerformance = {
+  duration: number;
+  latency: number; 
+  processingTime: number;
+  transferTime: number;
+  transferSize: number;
+  transferEncoding: string;
+};
+
 export interface ApicoResponse<T = any> {
   data: T;
   status: number;
@@ -25,6 +34,7 @@ export interface ApicoResponse<T = any> {
   headers: Headers;
   config: RequestConfig;
   originalResponse: Response;
+  performance?: ResponsePerformance;
 }
 
 export interface ApicoError extends Error {
@@ -47,7 +57,7 @@ export type SuccessResult<T = any> = {
 export type RequestResult<T = any> = SuccessResult<T> | ErrorResult;
 
 export type BeforeRequestInterceptor = (config: RequestConfig) => RequestConfig | Promise<RequestConfig>;
-export type ResponseInterceptor = <T>(response: ApicoResponse<T>) => ApicoResponse<T> | Promise<ApicoResponse<T>>;
+export type ResponseInterceptor = <T = any>(response: ApicoResponse<T>) => ApicoResponse<T & Record<string, any>> | Promise<ApicoResponse<T & Record<string, any>>>;
 export type ErrorInterceptor = (error: ApicoError) => ApicoError | Promise<ApicoError>;
 
 export interface ApicoInstance {
